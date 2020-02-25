@@ -1,37 +1,21 @@
-# Xero-Postman OAuth 2.0
-A Postman collection for authenticating to the Xero API. 
+# BCSC-Postman OAuth 2.0
+A Postman collection for authenticating to the BCSC API. 
 
 ## Steps to get up and running
-Follow these steps to quickly get up and running with the Xero API and Postman:
+Follow these steps to quickly test out your access to the BC Services Card OIDC environment
 
-### 1. Import the Xero OAuth 2.0 collection and Xero environment into Postman
+### 1. Get an OAuth2 (OIDC)  key and secrect for your application from the BC Services Card Self Service site
+Lets assume that these are called "Client key" and "Client secret". Remember your redirect URL "Redirect URL"
+
+### 2. Import the BCSC OAuth 2.0 collection and BCSC environment into Postman
 Click the button below and select the Desktop version of Postman (Chrome extension doesn't support environment variables). This will also install the Collection and Environment we'll be using.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d069793e904f7602770d#?env%5BOAuth%202.0%5D=W3sia2V5IjoiY2xpZW50X2lkIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlfSx7ImtleSI6ImNsaWVudF9zZWNyZXQiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoicmVmcmVzaF90b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJhY2Nlc3NfdG9rZW4iLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoieGVyby10ZW5hbnQtaWQiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoicmVfZGlyZWN0VVJJIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlfSx7ImtleSI6InNjb3BlcyIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJzdGF0ZSIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX1d)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fill-this-in
 
-Alternatively, you can download the Xero OAuth2.0.postman_collection and OAuth 2.0.postman_environment JSON files above and import them via the Import button in the top left of the Postman Workplace sceen.
-
-### 2. Create an OAuth2 app at https://developer.xero.com/myapps
-Go to the Xero developer portal and create an OAuth2 app.
-
-If you haven't already signed up for a xero account you can do so [here](https://www.xero.com/signup/api/).
-
-Use the following values:
-* App Name - your choice, but can't contain the word 'Xero'
-* Company or application URL - this needs to be an https address, but isn't used.
-* OAuth 2.0 redirect URI - also needs to be https but won’t be used in postman
-
-![create an oauth2 app](images/2_1_addApp.PNG)
-
-Then:
-1. Click Create App
-1. Click Generate a secret
-1. Keep the page open
-
-![your newly created app details](images/2_2_createdAppDetails.PNG)
+Alternatively, you can download the BCSC OAuth2.0.postman_collection and BCSC 2.0.postman_environment JSON files above and import them via the Import button in the top left of the Postman Workplace sceen.
 
 ### 3. Add your first set of environment variables in Postman
-Copy the Client id, Client secret and OAuth 2.0 redirect URI from the My Apps screen into the environment variables in Postman. To add these details to the Environment, make sure you have the OAuth 2.0 Environment selected, click the eye button, then edit.
+Copy your  Client id, Client secret and OAuth 2.0 redirect URI from your request to the test system into the environment variables in Postman. To add these details to the Environment, make sure you have the OAuth 2.0 Environment selected, click the eye button, then edit.
 
 ![Environment with some details](images/3_1_addedToEnvironment.PNG)
 
@@ -85,14 +69,6 @@ We now have the last remaining tokens needed to access the Xero API. These need 
 Follow the same process for the Refresh Token.
 
 ![Set your Access and Refresh Tokens](images/6_1_setTheAccessAndRefreshTokens.png)
-
-### 7. Find out which tenants (organisations) we are connected to
-
-1. Double-click on the GET Connections request
-1. Click Send
-1. Like we did for the Access and Refresh Tokens, highlight the tenantId from the response, right click and select Set > OAuth 2.0 > xero-tenant-id
-
-![GET access token](images/7_1_addTheTenantID.PNG)
 
 Congrats! You're now authenticated and can start making API calls. Your access token will last for 12mins, after which time you'll need to refresh the token. 
 

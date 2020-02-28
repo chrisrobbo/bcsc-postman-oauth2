@@ -23,8 +23,8 @@
 			"enabled": true
 		},
 		{
-			"key": "re_directURI",
-			"value": "",
+			"key": "redirect_uri",
+			"value": "https://redirect.me",
 			"enabled": true
 		},
 		{
@@ -38,13 +38,13 @@
 			"enabled": true
 		},
 		{
-			"key": "scopes",
-			"value": "",
+			"key": "scope",
+			"value": "openid profile email address",
 			"enabled": true
 		},
 		{
 			"key": "state",
-			"value": "",
+			"value": "SomeStateString",
 			"enabled": true
 		}
 	],

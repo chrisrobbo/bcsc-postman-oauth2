@@ -4,83 +4,91 @@ A Postman collection for authenticating to the BCSC API.
 ## Steps to get up and running
 Follow these steps to quickly test out your access to the BC Services Card OIDC environment
 
-### 1. Get an OAuth2 (OIDC)  key and secrect for your application from the BC Services Card Self Service site
-Lets assume that these are called "Client key" and "Client secret". Remember your redirect URL "Redirect URL"
+### 1. Get an OAuth2 (OIDC)  key and secret for your application from the BC Services Card Self Service site
+Lets assume that these are called "Client key" and "Client secret". Remember your redirect URL "Redirect URL" and the scopes you have requested. You also need to remember whether you are encrypting or signing  the response or whether you require the response in JWT or JSON format . The signing parameters (id_token_signed_response_alg,  userinfo_signed_response_alg) are linked to the JWKS URL and the encryption parameters (id_token_encrypted_reponse and userinfo_encrypted_response ) determine whether the response is encrypted. 
 
 ### 2. Import the BCSC OAuth 2.0 collection and BCSC environment into Postman
 Click the button below and select the Desktop version of Postman (Chrome extension doesn't support environment variables). This will also install the Collection and Environment we'll be using.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fill-this-in
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d2bbd39716bf26d72f9c)
 
 Alternatively, you can download the BCSC OAuth2.0.postman_collection and BCSC 2.0.postman_environment JSON files above and import them via the Import button in the top left of the Postman Workplace sceen.
 
-### 3. Add your first set of environment variables in Postman
-Copy your  Client id, Client secret and OAuth 2.0 redirect URI from your request to the test system into the environment variables in Postman. To add these details to the Environment, make sure you have the OAuth 2.0 Environment selected, click the eye button, then edit.
+### 3. Add your environment variables in Postman
+Copy your Client id, Client secret, redirect URI and scopes from the BC Services Card Self Service site into the environment variables in Postman.
+The mapping is as follows : 
+```
+Client id -> client_id
+Client secrect -> client_secret
+Redirect URI -> redirect_uri
+Scopes -> scope
+```
 
-![Environment with some details](images/3_1_addedToEnvironment.PNG)
+ To add these details to the Environment, make sure you have the "BCSC OAuth 2.0" Environment selected in Postman, click the eye button, then edit.
 
-### 4. Add the scopes for the endpoints you will be accessing.
-Our Developer Center lists the available scopes [here](https://developer.xero.com/documentation/oauth2/scopes). For getting started you will need at least:
+![Environment with some details](images/setenv.PNG)
 
-`offline_access accounting.transactions`
+### 4. Test that your client id and redirect url are ok
+1. Click on the "Basic Authorise Test" GET request under the BCSC OAuth 2.0 Collection
+1. Click "Send"
+1. Click on the Test Results tab
 
-In addition, to make further test calls we would also suggest adding:
+You should get a response with a green "Pass" logo . If it fails you will get a bunch of red html, you may be able to determine what the cause is, most likely your Client Id is wrong or your Redirect URL is incorrect.
 
-`openid profile email accounting.contacts accounting.settings`
+![Basic Authorize Test](images/basic-auth-test.PNG)
 
-Add the scopes required to the `scopes` environment variable.
 
-![Add some Scopes to your Environment](images/4_1_addScopesToEnvironment.PNG)
+### 5. Do a full test by getting your user attributes (NB. You will need a test account which you should have received from the BC Services Card Self Service site )
 
-### 5. Generate your access token
-1. Double-click on the GET Get Started request under the Xero OAuth 2.0 Collection
-1. Select the Authorization tab
-1. Click Get New Access Token
+1. Click on the "GET Attributes" request under the BCSC OAuth 2.0 Collection
+1. Select the tab "Authorisation" . Ensure that the Type is set to OAuth 2.0
+1. Click on the "Get new Access Token" button
 
-![Click the Get new Access Token Button](images/5_1_generateAccessToken.png)
+![Basic Authorize Test](images/Attributes.PNG)
 
-1. Add the Variable names surronded by {{}} from your Environment into the fields, as shown in the screenshot below
-1. Add https://login.xero.com/identity/connect/authorize to the Auth URL field
-1. Add https://identity.xero.com/connect/token to the Access Token Field
-1. Click Request Token
 
-![Request your Access Token](images/5_2_addTheVariablesAndURLs.PNG)
+Add values for each of the fields as follows (yes, type the curly brackets too ) :
 
-At this stage you will be prompted to log in to Xero. 
+```
+Token Name : mytoken
+Grant Type : Authorization Code
+Callback URL : {{redirect_uri}}
+Auth URL : {{authURI}}
+Access Token URL :  {{accessTokenURI}}
+Client ID : {{client_id}}
+Client Secret : {{client_secret}}
+Scope : {{scope}}
+State : 1234
+Client Authentication :  Send as Basic Auth header
+```
 
-![Login to Xero](images/5_3_askedToLogin.PNG)
+Note : For each of the fields presented (the {{...}} gets replaced by the variables you have already defined in step 3 above )  - and this is remembered so that you can simply change your environment if necessary without redoing the current step.
 
-If you've included the `openid profile email` scopes, you'll be asked to access your basic profile information.
 
-![Allow Basic Profile Information](images/5_4_basicProfile.PNG)
 
-You'll then be taken through to the Organisation Select window. Select the Organisation you want to connect to. If you want to connect to more than one Organisation, you can repeat the steps above and select another Organisation. 
+Once done, you can click "Request Token" and if all is well , you will be redirected to the standard login screens requesting your BCSC credentials.Using your test account data as a virtual card login, complete the login steps.
 
-![Select your Organisation](images/5_5_selectOrganisation.PNG)
+![BCSC Login 1](images/bcsc_login_1.PNG)
+![BCSC Login 2](images/bcsc_login_2.PNG)
+![BCSC Login 3](images/bcsc_login_3.PNG)
+![BCSC Login 4](images/bcsc_login_4.PNG)
 
-Once complete you'll be passed back to Postman.
 
-### 6. Set your Access and Refresh Tokens
-We now have the last remaining tokens needed to access the Xero API. These need to be set to the Environment Variables, to do this:
-1. Highlight the Access Token
-1. Right-click on it
-1. Select Set: OAuth 2.0 > access_token
 
-Follow the same process for the Refresh Token.
+ If all goes well, you will be returned a token 
 
-![Set your Access and Refresh Tokens](images/6_1_setTheAccessAndRefreshTokens.png)
 
-Congrats! You're now authenticated and can start making API calls. Your access token will last for 12mins, after which time you'll need to refresh the token. 
 
-### 8. Make your first API call!
-1. Double-click to load the GET Invoices request
-1. Ensure No Auth is set on the Authorization tab
-1. Click Send
+![Successful access token](images/access_token_return.PNG)
 
-### 9. Refreshing the token
-1. Double-click to load the POST Refresh token request
-1. Ensure No Auth is set on the Authorization tab
-1. Click Send
+Now the fun part - simply click on "Send" for the request and you should get your user attributes returned - note that postman automatically adds your access token returned in the previous step , so you do not need to add anything manually to the GET request header. 
 
-### Notes:
-* We use the built in OAuth 2.0 support to get the token, however we then set this as an environment variable. So we don't need to use this support when making the normal API calls.
+![Get your attributes](images/get_attributes.PNG)
+
+
+Note: Depending on your encryption settings which you set up in the BC Services Card Self Service application, the attributes returned could be encrypted, returned as a JWT token or returned as JSON. 
+
+Note : To see the contents of a JWT token you can decode using eg.  https://jwt.io 
+
+You can verify that the data returned is the same as that displayed during the BC Services Card login process, and that the scopes are limited to those set up in your BC Services Card Self Service application
+

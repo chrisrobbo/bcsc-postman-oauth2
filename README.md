@@ -10,7 +10,7 @@ Lets assume that these are called "Client key" and "Client secret". Remember you
 ### 2. Import the BCSC OAuth 2.0 collection and BCSC environment into Postman
 Click the button below and select the Desktop version of Postman (Chrome extension doesn't support environment variables). This will also install the Collection and Environment we'll be using.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/d2bbd39716bf26d72f9c)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/715f6c5fd3d4ce3511f9)
 
 Alternatively, you can download the BCSC OAuth2.0.postman_collection and BCSC 2.0.postman_environment JSON files above and import them via the Import button in the top left of the Postman Workplace sceen.
 
